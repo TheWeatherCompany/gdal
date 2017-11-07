@@ -54,7 +54,6 @@ g2int g2_unpack5(unsigned char *cgrib,g2int cgrib_length,g2int *iofst,g2int *ndp
       g2int lensec,isign,newlen;
       g2int *lidrstmpl=0;
       xxtemplate *mapdrs;
-      int ret=0;
 
       ierr=0;
       *idrstmpl=0;       //NULL
@@ -73,16 +72,8 @@ g2int g2_unpack5(unsigned char *cgrib,g2int cgrib_length,g2int *iofst,g2int *ndp
       }
 
       // Get num of data points.
-      ret = gbit2(cgrib,cgrib_length,ndpts,*iofst,32);
-      // ndpts is clearly nonsense if it outside of 0..33554432
-      if (*ndpts < 0 || ret != 0) {
-         *ndpts = 0;
-         return 6;
-      }
-      if (*ndpts > 2<<24) {
-         *ndpts = 2<<24;
-         return 6;
-      }
+      gbit2(cgrib,cgrib_length,ndpts,*iofst,32);
+      
       *iofst=*iofst+32;
       gbit2(cgrib,cgrib_length,idrsnum,*iofst,16);     // Get Data Rep Template Num.
       *iofst=*iofst+16;
